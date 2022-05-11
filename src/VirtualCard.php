@@ -15,6 +15,7 @@ class VirtualCard
     public $requestId;
     private $base_url = "https://sandbox.gtpportal.com/rest";
     private $endpoint;
+    public $payload;
     
 
     public function __construct(string $username, string $password, int $programId)
@@ -26,7 +27,7 @@ class VirtualCard
 
     private function call($payload){
         // 'Authorization' => ['Basic'.base64_encode($this->username.':'.$this->password)]
-
+        $this->payload = $payload;
         $client = new Client();
         try{
 
