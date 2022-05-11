@@ -1,10 +1,10 @@
 {
-    "name": "michael/virtual_card",
+    "name": "trillzglobal/virtual_card",
     "description": "Generating Virtual Visa Card for Customer Registered on Application",
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Michael\\VirtualCard\\": "src/"
+            "TrillzGlobal\\VirtualCard\\": "src/"
         }
     },
     "authors": [
