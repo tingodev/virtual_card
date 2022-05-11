@@ -1,0 +1,21 @@
+{
+    "name": "michael/virtual_card",
+    "description": "Generating Virtual Visa Card for Customer Registered on Application",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Michael\\VirtualCard\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Trillz Global",
+            "email": "trillzglobal@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php" : ">=5.5.0",
+        "guzzlehttp/guzzle": "7.4.x-dev"
+    }
+}
