@@ -1,14 +1,17 @@
 <?php
 
-namespace Michael\virtualcard;
-use GuzzleHttp\Client;
+namespace TrillzGlobal\VirtualCard;
+use \GuzzleHttp\{
+    Client,
+    Exception\ClientException
+};
 
 class VirtualCard
 {
     public $username;
     public $password;
     public $program_id;
-
+    public $requestId;
     private $base_url = "https://sandbox.gtpportal.com/rest";
     private $endpoint;
     
@@ -20,17 +23,30 @@ class VirtualCard
         $this->program_id = $programId;
     }
 
-    private function __call($payload){
-        $client = new \GuzzleHttp\Client();
-        $response =  $client->request('POST',$this->base_url.$this->endpoint,$payload);
-        return $response;
+    private function call($payload){
+        // 'Authorization' => ['Basic'.base64_encode($this->username.':'.$this->password)]
+
+        $client = new Client();
+        try{
+
+            $response =  $client->request('POST',$this->base_url.$this->endpoint,[
+                'auth'=>[$this->username, $this->password],
+                'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
+                'json'=>$payload
+            ]);
+        }catch(ClientException $e){
+            return $e;
+        }
+
+        return $response->getBody();
     }
 
-    public function testPing($requestId, $pingId,)
+    public function testPing($requestId, $pingId)
     {
         $this->endpoint = '/api/v1/ping';
+        $this->requestId = $requestId;
         $payload = ["pingId"=> $pingId];
-        $response = $this->__call($payload);
+        $response = $this->call($payload);
 
         return $response;
     }

@@ -2,6 +2,7 @@
     "name": "trillzglobal/virtual_card",
     "description": "Generating Virtual Visa Card for Customer Registered on Application",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "TrillzGlobal\\VirtualCard\\": "src/"
