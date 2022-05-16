@@ -36,6 +36,7 @@ class VirtualCard
                 'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
                 'json'=>$payload
             ]);
+            //Body of response
             $response = $response->getBody();
         }catch(RequestException $e){
             if($e->hasResponse())
