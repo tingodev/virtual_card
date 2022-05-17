@@ -37,7 +37,7 @@ class VirtualCard
                 'json'=>$payload
             ]);
             //Body of response
-            $response = $response->getBody();
+            $response =(string) $response->getBody(true);
         }catch(RequestException $e){
             if($e->hasResponse())
             $response =(string) $e->getResponse()->getBody(true);
