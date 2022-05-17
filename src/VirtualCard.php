@@ -15,16 +15,17 @@ class VirtualCard extends Validator
     public $password;
     public $program_id;
     public $requestId;
-    private $base_url = "https://sandbox.gtpportal.com/rest";
+    public $base_url;
     private $endpoint;
     public $payload;
     
 
-    public function __construct(string $username, string $password, int $programId)
+    public function __construct(string $base_url, string $username, string $password, int $programId)
     {
         $this->username = $username;
         $this->password = $password;
         $this->program_id = $programId;
+        $this->base_url = $base_url;
     }
 
     private function call(){

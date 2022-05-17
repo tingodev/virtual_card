@@ -15,7 +15,9 @@ Package is used to communicate with VISA for generating Cards. It includes
 `use TrillzGlobal\VirtualCard\VirtualCard;`
 
 
-`$create = new VirtualCard($username,$password, $programId);`
+`$create = new VirtualCard($base_url, $username,$password, $programId);`
+
+$base_url = https://sandbox.gtpportal.com/rest
 
 *Confirm if You can reach host with a ping*
 
