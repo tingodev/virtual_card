@@ -7,7 +7,9 @@ use \GuzzleHttp\{
     Exception\RequestException
 };
 
-class VirtualCard
+use TrillzGlobal\Validator\Validator as Validator;
+
+class VirtualCard extends Validator
 {
     public $username;
     public $password;
@@ -25,22 +27,33 @@ class VirtualCard
         $this->program_id = $programId;
     }
 
-    private function call($payload){
+    private function call(){
         // 'Authorization' => ['Basic'.base64_encode($this->username.':'.$this->password)]
-        $this->payload = $payload;
+        
         $client = new Client();
         try{
 
-            $response =  $client->request('POST',$this->base_url.$this->endpoint,[
-                'auth'=>[$this->username, $this->password],
-                'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
-                'json'=>$payload
-            ]);
+            if(!empty($this->payload)){
+
+                $data =  $client->request('POST',$this->base_url.$this->endpoint,[
+                    'auth'=>[$this->username, $this->password],
+                    'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
+                    'json'=>$this->payload
+                ]);
+            }
+            else{
+                $data =  $client->request('GET',$this->base_url.$this->endpoint,[
+                    'auth'=>[$this->username, $this->password],
+                    'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"]
+                ]);
+            }
             //Body of response
-            $response =(string) $response->getBody(true);
+            $data =(string) $data->getBody(true);
+            $response = ["data"=>$data, "status"=>"success"];
         }catch(RequestException $e){
             if($e->hasResponse())
-            $response =(string) $e->getResponse()->getBody(true);
+            $data =(string) $e->getResponse()->getBody(true);
+            $response = ["data"=>$data, "status"=>"failed"];
         }
 
         return $response;
@@ -51,7 +64,8 @@ class VirtualCard
         $this->endpoint = '/api/v1/ping';
         $this->requestId = $requestId;
         $payload = ["pingId"=> $pingId];
-        $response = $this->call($payload);
+        $this->payload = $payload;
+        $response = $this->call();
 
         return $response;
     }
@@ -64,73 +78,66 @@ class VirtualCard
         }
         $this->endpoint = '/api/v1/accounts/virtual';
         $this->requestId = $requestId;
-        $response =  $this->call($data["details"]);
+        $this->payload = $data["details"];
+        $response =  $this->call();
 
         return $response;
     }
 
-    private function checkPayload(array $data){
-        
-        //Compulsory Data
-        $compulsory = [
-            "accountSource"=>"Account Source must be provided",
-            "address1"=> "First Address must be provided",
-            "birthDate"=> "Date of Birth to be provided",
-            "city"=> "Customer City is needed",
-            "country"=> "Country Name needed",
-            "emailAddress"=> "Valid Email Should be provided",
-            "firstName"=> "Firstname of Customer must be provided",
-            "idType"=> "Valid ID Type needed",
-            "idValue"=> "Provide valid ID type",
-            "lastName"=> "Customer Lastname Needed",
-            "countryCode"=> "Country code needed for mobile Number",
-            "number"=> "MObile Number needed",
-            "preferredName"=> "Prefered Name cannot be empty",
-            "referredBy"=> "ReferredBy must be provided",
-            "stateRegion"=> "State Region must be provided",
-            "subCompany"=> "Sub Company must be provided",
-        ];
+    
 
-        $diff = array_diff_key($compulsory, $data);
-        if(!empty($diff))
-        {
-            return ["status"=>"error", "details"=>$diff];;
+   //Transaction List for a given Card
+    public function getTransaction(array $data, $requestId){
+
+        $this->requestId = $requestId;
+        $accountId = $data['accountId'];
+        $startDate = $data['startDate'];
+        $endDate = $data['endDate'];
+        $numberOfTrans = $data['numberOfTransaction'];
+
+        $this->endpoint = '/api/v1/accounts/'.$accountId.'/transactions?StartDate='.$startDate.'&EndDate='.$endDate.'&NumberOfTrans='.$numberOfTrans.'&ExtendedData=false';
+        $this->payload = '';
+        return $this->call();
+    }
+
+
+    //Transfer Fund form one Card to another    
+    public function transferBetweenCards(array $data, $requestId){
+        $this->requestId = $requestId;
+        $data = $this->checkPayloadTransfer($data);
+        if($data["status"] == "error"){
+            return $data;
         }
-       $payload =  [
-            "accountSource"=> $data["accountSource"],
-            "address1"=> $data["address1"],
-            "birthDate"=> $data["birthDate"],
-            "city"=> $data["city"],
-            "country"=> $data["country"],
-            "emailAddress"=> $data["emailAddress"],
-            "firstName"=> $data["firstName"],
-            "idType"=> $data["idType"],
-            "idValue"=> $data["idValue"],
-            "lastName"=> $data["lastName"],
-            "mobilePhoneNumber"=> [
-              "countryCode"=> $data["countryCode"],
-              "number"=> $data["number"]
-            ],
-            "preferredName"=> $data["preferredName"],
-            "referredBy"=> $data["referredBy"],
-            "stateRegion"=> $data["stateRegion"],
-            "subCompany"=> $data["subCompany"],
-            "expirationDate"=> $data["expirationDate"],
-            "middleName"=> $data["middleName"],
-            "otherAccountId"=> $data["otherAccountId"],
-            "otherCompanyName"=> $data["otherCompanyName"],
-            "address2"=> $data["address2"],
-            "address3"=> $data["address3"],
-            "postalCode"=> $data["postalCode"],
-            "alternatePhoneNumber"=> [
-              "countryCode"=> $data["countryCode"],
-              "number"=> $data["number"]
-            ],
-            "solId"=> $data["solId"],
-            "bvn"=> $data["bvn"]
-        ];
-        $response = ["status"=>"success", "details"=>$payload];
-        return $response;
+        $this->payload = $data["details"];
+        $this->requestId = $requestId;
+        $this->endpoint = '/api/v1/accounts/fund-transfer';
+
+        return $this->call();
     }
+
+    //Get Balance of a Card
+
+    public function getBalance($accountId, $requestId){
+        $this->requestId = $requestId;
+        $this->endpoint = '/api/v1/accounts/'.$accountId.'/balance';
+        $this->payload = '';
+        return $this->call();
+    }
+
+    //Transfer to a Card
+    public function transferToCard(array $data, $requestId){
+        $this->requestId = $requestId;
+        $data = $this->checkPayloadTransfer($data);
+        if($data["status"] == "error"){
+            return $data;
+        }
+        $this->payload = $data["details"];
+        $this->requestId = $requestId;
+        $this->endpoint = '/api/v1/accounts/'.$data["accountId"].'/transactions';
+
+    }
+
+
+
 
 }
