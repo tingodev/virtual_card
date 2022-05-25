@@ -75,7 +75,7 @@ class VirtualCard extends Validator
     {
         $data = $this->checkPayload($data);
         if($data["status"] == "error"){
-            return $data;
+            return json_encode($data);
         }
         $this->endpoint = '/api/v1/accounts/virtual';
         $this->requestId = $requestId;
@@ -107,7 +107,7 @@ class VirtualCard extends Validator
         $this->requestId = $requestId;
         $data = $this->checkPayloadTransfer($data);
         if($data["status"] == "error"){
-            return $data;
+            return json_encode($data);
         }
         $this->payload = $data["details"];
         $this->requestId = $requestId;
@@ -128,14 +128,15 @@ class VirtualCard extends Validator
     //Transfer to a Card
     public function transferToCard(array $data, $requestId){
         $this->requestId = $requestId;
-        $data = $this->checkPayloadTransfer($data);
+        $data = $this->checkPayloadToCard($data);
         if($data["status"] == "error"){
-            return $data;
+            return json_encode($data);
         }
         $this->payload = $data["details"];
         $this->requestId = $requestId;
         $this->endpoint = '/api/v1/accounts/'.$data["accountId"].'/transactions';
 
+        return $this->call();
     }
 
 
