@@ -104,7 +104,7 @@ class Validator
     public function checkPayloadToCard($data){
         $compulsory = [
             "currencyCode"=>"Use a valid country code",
-            "last4Digit"=> "Last 4 digit of card to be provided",
+            "last4Digits"=> "Last 4 digit of card to be provided",
             "paymentType"=> "Payment Type is needed",
             "transferAmount"=> "Transfer Amount Should be provided",
             "referenceMemo"=> "To Card Reference Account needed",
@@ -119,7 +119,7 @@ class Validator
 
         $payload =  [
             "currencyCode"=> $data["currencyCode"],
-            "last4Digit"=> $data["last4Digit"],
+            "last4Digits"=> $data["last4Digits"],
             "paymentType"=> $data["paymentType"],
             "transferAmount"=> $data["transferAmount"],
             "referenceMemo"=> $data["referenceMemo"],
