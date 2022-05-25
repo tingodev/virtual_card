@@ -54,7 +54,7 @@ class VirtualCard extends Validator
         }catch(RequestException $e){
             if($e->hasResponse())
             $data =(string) $e->getResponse()->getBody(true);
-            $response =json_encode(["data"=>$data, "status"=>"failed"]);
+            $response =json_encode(["data"=>json_decode($data, true), "status"=>"failed"]);
         }
 
         return $response;
