@@ -134,7 +134,7 @@ class VirtualCard extends Validator
         }
         $this->payload = $data["details"];
         $this->requestId = $requestId;
-        $this->endpoint = '/api/v1/accounts/'.$data["accountId"].'/transactions';
+        $this->endpoint = '/api/v1/accounts/'.$data["details"]["accountId"].'/transactions';
 
         return $this->call();
     }
