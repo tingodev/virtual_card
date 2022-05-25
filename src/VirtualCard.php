@@ -7,7 +7,7 @@ use \GuzzleHttp\{
     Exception\RequestException
 };
 
-use TrillzGlobal\Validator\Validator as Validator;
+use TrillzGlobal\VirtualCard\Validator as Validator;
 
 class VirtualCard extends Validator
 {

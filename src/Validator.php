@@ -1,6 +1,6 @@
 <?php
 
-namespace TrillzGlobal\Validator;
+namespace TrillzGlobal\VirtualCard;
 
 class Validator 
 {

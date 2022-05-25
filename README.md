@@ -1,6 +1,6 @@
 ## Virtual Card Creation
 
-_Language_ PHP
+_Language: PHP_
 
 Package is used to communicate with VISA for generating Cards. It includes 
 -Virtual Card
@@ -26,7 +26,7 @@ _$requestId -> This is a unique identifier of each request_
 `$create->testPing($requestId, $pingId)`
 
 
-*To generate a new Card*
+# *To generate a new Card*
 
 _$data -> Contains array of data_
 
@@ -51,7 +51,7 @@ _"subCompany"=> "Sub Company must be provided",_
 
 
 
-*Get transaction for Duration*
+# *Get transaction for Duration*
 
 _$accountId => Id recieved when card was created_
 _$startDate => Date to start reporting 03-FEB_
@@ -61,14 +61,14 @@ _$numberOfTrans => Number of record to pull_
 `$create->getTransaction($data, $requestId)`
 
 
-*Get Card Balance*
+# *Get Card Balance*
 
 _$accountId => Id recieved when card was created_
 
 `$create->getBalance($accountId, $requestId)`
 
 
-*Transfer Between Wallets*
+# *Transfer Between Wallets*
 
 _"currencyCode"=>"Use a valid country code",_
 _"fromAccountId"=> "From account cannot be empty",_
@@ -82,7 +82,7 @@ _"toCardReferenceMemo"=> "From Card Reference Should be provided"_
 `$create->transferBetweenCards($data, $requestId)`
 
 
-*Transfer to Card*
+# *Transfer to Card*
 
 _"currencyCode"=>"Use a valid country code",_
 _"last4Digit"=> "Last 4 digit of card to be provided",_
