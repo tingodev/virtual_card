@@ -107,7 +107,8 @@ class Validator
             "last4Digit"=> "Last 4 digit of card to be provided",
             "paymentType"=> "Payment Type is needed",
             "transferAmount"=> "Transfer Amount Should be provided",
-            "referenceMemo"=> "To Card Reference Account needed"
+            "referenceMemo"=> "To Card Reference Account needed",
+            "accountId" => "accountId must be provided"
         ];
 
         $diff = array_diff_key($compulsory, $data);
@@ -121,7 +122,8 @@ class Validator
             "last4Digit"=> $data["last4Digit"],
             "paymentType"=> $data["paymentType"],
             "transferAmount"=> $data["transferAmount"],
-            "referenceMemo"=> $data["referenceMemo"]
+            "referenceMemo"=> $data["referenceMemo"],
+            "accountId"=>$data["accountId"]
         ];
 
         $response = ["status"=>"success", "details"=>$payload];
