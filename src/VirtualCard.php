@@ -71,13 +71,19 @@ class VirtualCard extends Validator
         return $response;
     }
 
-    public function generateCard(array $data, $requestId)
+    public function generateCard(array $data, $requestId,string $type ="VIRTUAL")
     {
         $data = $this->checkPayload($data);
         if($data["status"] == "error"){
             return json_encode($data);
         }
-        $this->endpoint = '/api/v1/accounts/virtual';
+        if($type =="INSTANT"){
+            $this->endpoint =   "/api/v1/accounts/instant";
+        }
+        else{
+            $this->endpoint = '/api/v1/accounts/virtual';
+        }
+        
         $this->requestId = $requestId;
         $this->payload = $data["details"];
         $response =  $this->call();
