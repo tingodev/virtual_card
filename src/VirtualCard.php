@@ -16,7 +16,7 @@ class VirtualCard extends Validator
     public $program_id;
     public $requestId;
     public $base_url;
-    private $endpoint;
+    public $endpoint;
     public $payload;
     
 
