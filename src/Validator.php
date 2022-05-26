@@ -131,6 +131,30 @@ class Validator
         return $response;
     }
 
+    public function checkUpdateStatus(array $data){
+        $compulsory = [
+            "newCardStatus"=>"New Card Status must be provided",
+            "last4Digits"=> "Last 4 digit of card to be provided",
+            "accountId"=> "Provide Account Id",
+            "mobileNumber"=> "Mobile Number must be provided"
+        ];
+        $diff = array_diff_key($compulsory, $data);
+        if(!empty($diff))
+        {
+            return ["status"=>"error", "details"=>$diff];;
+        }
 
+        $payload =  [
+            "last4Digits"=> $data["last4Digits"],
+            "mobileNumber"=> $data["mobileNumber"],
+            "newCardStatus"=> $data["newCardStatus"],
+            "accountId"=>$data["accountId"]
+        ];
+
+        $response = ["status"=>"success", "details"=>$payload];
+        return $response;
+    }
+
+    
 
 }
