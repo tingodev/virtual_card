@@ -151,7 +151,7 @@ class VirtualCard extends Validator
         if($data["status"] == "error"){
             return json_encode($data);
         }
-        $this->endpoint = "/api/v1/accounts/".$data["details"]['accountId']."/status";
+        $this->endpoint = "/api/v1/accounts/".$data['details']['accountId']."/status";
         $this->payload = $data["details"];
         $this->requestId = $requestId;
         return $this->call();
