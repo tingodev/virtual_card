@@ -18,7 +18,9 @@ class VirtualCard extends Validator
     public $base_url;
     public $endpoint;
     public $payload;
-    public $proxy = 'http://US5iC1fayR5NyHjkUPPurYF8:e6fc27a0-6374-4b8a-9dc7-fca0f13ac64f@tnt8obdz2yf.sandbox.verygoodproxy.com:8080';
+    public $proxy_username = 'US5iC1fayR5NyHjkUPPurYF8';
+    public $proxy_password='e6fc27a0-6374-4b8a-9dc7-fca0f13ac64f@tnt8obdz2yf';
+    public $proxy = 'http://'.$this->proxy_username.':'.$this->proxy_password.'.sandbox.verygoodproxy.com:8080';
     public $set_proxy = 0;
     
 
