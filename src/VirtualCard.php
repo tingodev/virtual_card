@@ -18,6 +18,8 @@ class VirtualCard extends Validator
     public $base_url;
     public $endpoint;
     public $payload;
+    public $proxy = 'http://US5iC1fayR5NyHjkUPPurYF8:e6fc27a0-6374-4b8a-9dc7-fca0f13ac64f@tnt8obdz2yf.sandbox.verygoodproxy.com:8080';
+    public $set_proxy = 0;
     
 
     public function __construct(string $base_url, string $username, string $password, int $programId)
@@ -36,11 +38,22 @@ class VirtualCard extends Validator
 
             if(!empty($this->payload)){
 
-                $data =  $client->request('POST',$this->base_url.$this->endpoint,[
-                    'auth'=>[$this->username, $this->password],
-                    'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
-                    'json'=>$this->payload
-                ]);
+                
+                if($this->set_proxy){
+                    $data =  $client->request('POST',$this->base_url.$this->endpoint,[
+                        'auth'=>[$this->username, $this->password],
+                        'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
+                        'json'=>$this->payload,
+                        'proxy'=>$this->proxy
+                    ]);
+
+                }else{
+                    $data =  $client->request('POST',$this->base_url.$this->endpoint,[
+                        'auth'=>[$this->username, $this->password],
+                        'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
+                        'json'=>$this->payload
+                    ]);
+                }
             }
             else{
                 $data =  $client->request('GET',$this->base_url.$this->endpoint,[
