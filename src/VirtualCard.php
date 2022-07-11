@@ -173,6 +173,12 @@ class VirtualCard extends Validator
     }
 
 
+    public function getCardDetails(array $data, $requestId){
+        $this->endpoint = "/api/v1/accounts/".$data['accountId']."/pci-info";
+        $this->payload = ["Last4Digits"=>$data['last4Digits']];
+        $this->requestId = $requestId;
+        return $this->call();
+    }
 
 
 }
