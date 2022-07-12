@@ -22,6 +22,8 @@ class VirtualCard extends Validator
     public $proxy_password;
     public $proxy;
     public $set_proxy = 0;
+    public $proxy_program_id;
+    public $proxy_authorization;
     
 
     public function __construct(string $base_url, string $username, string $password, int $programId)
@@ -43,8 +45,7 @@ class VirtualCard extends Validator
                 
                 if($this->set_proxy){
                     $data =  $client->request('POST',$this->base_url.$this->endpoint,[
-                        'auth'=>[$this->username, $this->password],
-                        'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
+                        'headers'=>["programId"=>$this->proxy_program_id,"Authorization"=>$this->proxy_authorization, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
                         'json'=>$this->payload,
                         'proxy'=>$this->proxy,
                         'verify'=>false
