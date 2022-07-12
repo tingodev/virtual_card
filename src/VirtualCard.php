@@ -46,7 +46,8 @@ class VirtualCard extends Validator
                         'auth'=>[$this->username, $this->password],
                         'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
                         'json'=>$this->payload,
-                        'proxy'=>$this->proxy
+                        'proxy'=>$this->proxy,
+                        'verify'=>false
                     ]);
 
                 }else{
