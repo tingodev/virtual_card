@@ -24,6 +24,7 @@ class VirtualCard extends Validator
     public $set_proxy = 0;
     public $proxy_program_id;
     public $proxy_authorization;
+    public $method;
     
 
     public function __construct(string $base_url, string $username, string $password, int $programId)
@@ -44,7 +45,7 @@ class VirtualCard extends Validator
 
                 
                 if($this->set_proxy){
-                    $data =  $client->request('POST',$this->base_url.$this->endpoint,[
+                    $data =  $client->request($this->method,$this->base_url.$this->endpoint,[
                         'headers'=>["programId"=>$this->proxy_program_id,"Authorization"=>$this->proxy_authorization, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
                         'json'=>$this->payload,
                         'proxy'=>$this->proxy,
@@ -52,7 +53,7 @@ class VirtualCard extends Validator
                     ]);
 
                 }else{
-                    $data =  $client->request('POST',$this->base_url.$this->endpoint,[
+                    $data =  $client->request($this->method,$this->base_url.$this->endpoint,[
                         'auth'=>[$this->username, $this->password],
                         'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
                         'json'=>$this->payload
@@ -60,7 +61,7 @@ class VirtualCard extends Validator
                 }
             }
             else{
-                $data =  $client->request('GET',$this->base_url.$this->endpoint,[
+                $data =  $client->request($this->method,$this->base_url.$this->endpoint,[
                     'auth'=>[$this->username, $this->password],
                     'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"]
                 ]);
@@ -87,6 +88,7 @@ class VirtualCard extends Validator
         $payload = ["pingId"=> $pingId];
         $this->payload = $payload;
         $response = $this->call();
+        $this->method ='POST';
 
         return $response;
     }
@@ -103,6 +105,8 @@ class VirtualCard extends Validator
         else{
             $this->endpoint = '/api/v1/accounts/virtual';
         }
+
+        $this->method ='POST';
         
         $this->requestId = $requestId;
         $this->payload = $data["details"];
@@ -121,7 +125,7 @@ class VirtualCard extends Validator
         $startDate = $data['startDate'];
         $endDate = $data['endDate'];
         $numberOfTrans = $data['numberOfTransaction'];
-
+        $this->method ='GET';
         $this->endpoint = '/api/v1/accounts/'.$accountId.'/transactions?StartDate='.$startDate.'&EndDate='.$endDate.'&NumberOfTrans='.$numberOfTrans.'&ExtendedData=false';
         $this->payload = '';
         return $this->call();
@@ -135,6 +139,7 @@ class VirtualCard extends Validator
         if($data["status"] == "error"){
             return json_encode($data);
         }
+        $this->method ='POST';
         $this->payload = $data["details"];
         $this->requestId = $requestId;
         $this->endpoint = '/api/v1/accounts/fund-transfer';
@@ -148,6 +153,7 @@ class VirtualCard extends Validator
         $this->requestId = $requestId;
         $this->endpoint = '/api/v1/accounts/'.$accountId.'/balance';
         $this->payload = '';
+        $this->method ='GET';
         return $this->call();
     }
 
@@ -161,7 +167,7 @@ class VirtualCard extends Validator
         $this->payload = $data["details"];
         $this->requestId = $requestId;
         $this->endpoint = '/api/v1/accounts/'.$data["details"]["accountId"].'/transactions';
-
+        $this->method ='POST';
         return $this->call();
     }
 
@@ -171,6 +177,7 @@ class VirtualCard extends Validator
         if($data["status"] == "error"){
             return json_encode($data);
         }
+        $this->method ='PATCH';
         $this->endpoint = "/api/v1/accounts/".$data['details']['accountId']."/status";
         $this->payload = $data["details"];
         $this->requestId = $requestId;
@@ -182,6 +189,7 @@ class VirtualCard extends Validator
         $this->endpoint = "/api/v1/accounts/".$data['accountId']."/pci-info";
         $this->payload = ["Last4Digits"=>$data['last4Digits']];
         $this->requestId = $requestId;
+        $this->method ='POST';
         return $this->call();
     }
 
