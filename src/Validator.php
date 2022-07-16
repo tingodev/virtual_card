@@ -136,7 +136,7 @@ class Validator
             "newCardStatus"=>"New Card Status must be provided",
             "last4Digits"=> "Last 4 digit of card to be provided",
             "accountId"=> "Provide Account Id",
-            "mobileNumber"=> "Mobile Number must be provided"
+            "mobilePhoneNumber"=> "Mobile Number must be provided"
         ];
         $diff = array_diff_key($compulsory, $data);
         if(!empty($diff))
