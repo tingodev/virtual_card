@@ -146,9 +146,8 @@ class Validator
 
         $payload =  [
             "last4Digits"=> $data["last4Digits"],
-            "mobileNumber"=> $data["mobileNumber"],
-            "newCardStatus"=> $data["newCardStatus"],
-            "accountId"=>$data["accountId"]
+            "mobilePhoneNumber"=> $data["mobileNumber"],
+            "newCardStatus"=> $data["newCardStatus"]
         ];
 
         $response = ["status"=>"success", "details"=>$payload];
