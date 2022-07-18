@@ -102,6 +102,9 @@ class VirtualCard extends Validator
         if($type =="INSTANT"){
             $this->endpoint =   "/api/v1/accounts/instant";
         }
+        elseif($type=="PERSONAL"){
+            $this->endpoint =   "/api/v1/accounts/personalized";
+        }
         else{
             $this->endpoint = '/api/v1/accounts/virtual';
         }
