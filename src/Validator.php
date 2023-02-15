@@ -50,20 +50,20 @@ class Validator
             "referredBy"=> $data["referredBy"],
             "stateRegion"=> $data["stateRegion"],
             "subCompany"=> $data["subCompany"],
-            "expirationDate"=> $data["expirationDate"],
-            "middleName"=> $data["middleName"],
-            "otherAccountId"=> $data["otherAccountId"],
-            "otherCompanyName"=> $data["otherCompanyName"],
-            "address2"=> $data["address2"],
-            "address3"=> $data["address3"],
-            "postalCode"=> $data["postalCode"],
-            "accountId"=>$data["accountId"],
+            "expirationDate"=> $data["expirationDate"] ?? null,
+            "middleName"=> $data["middleName"] ?? null,
+            "otherAccountId"=> $data["otherAccountId"] ?? null,
+            "otherCompanyName"=> $data["otherCompanyName"] ?? null,
+            "address2"=> $data["address2"] ?? null,
+            "address3"=> $data["address3"] ?? null,
+            "postalCode"=> $data["postalCode"] ?? null,
+            "accountId"=>$data["accountId"] ?? null,
             "alternatePhoneNumber"=> [
-              "countryCode"=> $data["countryCode"],
-              "number"=> $data["number"]
+              "countryCode"=> $data["countryCode"] ?? null,
+              "number"=> $data["number"] ?? null
             ],
-            "solId"=> $data["solId"],
-            "bvn"=> $data["bvn"]
+            "solId"=> $data["solId"] ?? null,
+            "bvn"=> $data["bvn"] ?? null
         ];
         $response = ["status"=>"success", "details"=>$payload];
         return $response;
