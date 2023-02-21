@@ -25,6 +25,7 @@ class VirtualCard extends Validator
     public $proxy_program_id;
     public $proxy_authorization;
     public $method;
+    public $debug;
     
 
     public function __construct(string $base_url, string $username, string $password, int $programId)
@@ -49,21 +50,24 @@ class VirtualCard extends Validator
                         'headers'=>["programId"=>$this->proxy_program_id,"Authorization"=>$this->proxy_authorization, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
                         'json'=>$this->payload,
                         'proxy'=>$this->proxy,
-                        'verify'=>false
+                        'verify'=>false,
+                        'debug'=>$this->debug
                     ]);
 
                 }else{
                     $data =  $client->request($this->method,$this->base_url.$this->endpoint,[
                         'auth'=>[$this->username, $this->password],
                         'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
-                        'json'=>$this->payload
+                        'json'=>$this->payload,
+                        'debug'=>$this->debug
                     ]);
                 }
             }
             else{
                 $data =  $client->request($this->method,$this->base_url.$this->endpoint,[
                     'auth'=>[$this->username, $this->password],
-                    'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"]
+                    'headers'=>["programId"=>$this->program_id, "requestId"=>$this->requestId, "Content-Type"=>"application/json"],
+                    'debug'=>$this->debug
                 ]);
             }
             //Body of response
