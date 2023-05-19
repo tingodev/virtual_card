@@ -91,8 +91,8 @@ class VirtualCard extends Validator
         $this->requestId = $requestId;
         $payload = ["pingId"=> $pingId];
         $this->payload = $payload;
-        $response = $this->call();
         $this->method ='POST';
+        $response = $this->call();
 
         return $response;
     }
